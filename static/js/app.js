@@ -15,6 +15,9 @@ function atualizarPaginacao(totalJogos) {
     
     let html = '';
     
+    // Botão voltar para primeira página
+    html += `<button class="pagination__btn" ${paginaAtual === 1 ? 'disabled' : ''} onclick="mudarPagina(1)">Primeira</button>`;
+    
     // Botão anterior
     html += `<button class="pagination__btn" ${paginaAtual === 1 ? 'disabled' : ''} onclick="mudarPagina(${paginaAtual - 1})">Anterior</button>`;
     
