@@ -6,75 +6,86 @@ import os
 import random
 from dotenv import load_dotenv
 import time
+from functools import lru_cache
+import urllib3
+
+# Desabilitar avisos de SSL
+urllib3.disable_warnings()
 
 load_dotenv()
 
 app = Flask(__name__)
 
-def get_proxy():
-    # Lista de proxies gratuitos - você pode adicionar mais
-    proxies = [
-        'http://163.172.31.44:80',
-        'http://163.172.31.45:80',
-        'http://163.172.31.46:80',
-        'http://163.172.31.47:80',
-        'http://163.172.31.48:80'
-    ]
-    return random.choice(proxies)
+# Cache por 30 segundos
+@lru_cache(maxsize=1)
+def get_cached_timestamp():
+    return int(time.time() / 30)
 
 def get_live_matches():
+    # Força atualização do cache a cada 30 segundos
+    _ = get_cached_timestamp()
+    
     url = "https://api.sofascore.com/api/v1/sport/football/events/live"
     
-    # Lista de user agents para rotacionar
+    # Lista de user agents modernos
     user_agents = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
     ]
     
-    max_retries = 5
-    retry_delay = 3  # segundos
+    max_retries = 3
+    retry_delay = 2  # segundos
     
     for attempt in range(max_retries):
         try:
-            # Rotaciona User-Agent e adiciona headers extras
+            # Rotaciona User-Agent e adiciona headers mais realistas
             current_user_agent = random.choice(user_agents)
+            
+            # Simula um timestamp real
+            timestamp = int(time.time() * 1000)
+            
             headers = {
                 "User-Agent": current_user_agent,
                 "Accept": "*/*",
                 "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
                 "Accept-Encoding": "gzip, deflate, br",
                 "Origin": "https://www.sofascore.com",
-                "Referer": "https://www.sofascore.com/",
+                "Referer": f"https://www.sofascore.com/football/livescore/{timestamp}",
                 "Sec-Ch-Ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
                 "Sec-Ch-Ua-Mobile": "?0",
                 "Sec-Ch-Ua-Platform": "\"Windows\"",
                 "Sec-Fetch-Dest": "empty",
                 "Sec-Fetch-Mode": "cors",
                 "Sec-Fetch-Site": "same-site",
+                "If-None-Match": f"W/\"{random.randint(1000, 9999)}\"",
                 "Cache-Control": "no-cache",
                 "Pragma": "no-cache",
-                "X-Requested-With": "XMLHttpRequest"
-            }
-            
-            # Configura proxy
-            proxy = get_proxy()
-            proxies = {
-                'http': proxy,
-                'https': proxy
+                "X-Requested-With": "XMLHttpRequest",
+                "Cookie": f"_gid={random.randint(100000, 999999)}; _ga={random.randint(100000, 999999)}"
             }
             
             print(f"Tentativa {attempt + 1} de {max_retries} para buscar jogos")
-            print(f"Usando proxy: {proxy}")
             print(f"User-Agent: {current_user_agent}")
             
-            response = requests.get(
+            session = requests.Session()
+            
+            # Primeiro faz uma requisição para a página principal
+            session.get(
+                "https://www.sofascore.com/football/livescore",
+                headers=headers,
+                timeout=10
+            )
+            
+            # Pequeno delay para simular comportamento humano
+            time.sleep(random.uniform(0.5, 1.5))
+            
+            # Agora faz a requisição para a API
+            response = session.get(
                 url,
                 headers=headers,
-                proxies=proxies,
-                timeout=15,
-                verify=False  # Necessário para alguns proxies
+                timeout=10
             )
             
             print(f"Status code da resposta: {response.status_code}")
