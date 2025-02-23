@@ -56,9 +56,22 @@ function mudarPagina(novaPagina) {
             const iframe = radarContainer.querySelector('iframe');
             const matchId = row.getAttribute('data-event-id');
             
-            const widgetUrl = `https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id=${matchId}&widgetTheme=light`;
-            iframe.src = widgetUrl;
-            checkWidget(iframe, matchId);
+            // Adicionar timestamp para evitar cache
+            const timestamp = new Date().getTime();
+            const widgetUrl = `https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id=${matchId}&widgetTheme=light&_=${timestamp}`;
+            
+            // Remover e recriar o iframe para forçar o recarregamento
+            const newIframe = document.createElement('iframe');
+            newIframe.width = '50%';
+            newIframe.height = '100';
+            newIframe.frameBorder = '-5';
+            newIframe.scrolling = 'no';
+            newIframe.src = widgetUrl;
+            newIframe.onload = () => checkWidget(newIframe, matchId);
+            newIframe.onerror = () => showError(matchId);
+            
+            // Substituir o iframe antigo pelo novo
+            iframe.parentNode.replaceChild(newIframe, iframe);
         } else {
             row.style.display = 'none';
             row.style.opacity = '0';
