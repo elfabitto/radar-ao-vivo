@@ -1,8 +1,8 @@
 /* Layout principal */
 .match-row {
     display: flex;
-    margin-bottom: 4rem;
-    margin-top: 1rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
     gap: 10rem;
 }
 
@@ -11,7 +11,8 @@
     width: 100%;
     gap: 1rem;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
 }
 
 /* Card do jogo */
