@@ -156,6 +156,18 @@ header h1 {
     gap: 1rem;
     margin: 2rem 0;
     padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    z-index: 1000;
+}
+
+/* Adicionar margem no final do container para evitar que o conteúdo fique sob a paginação */
+.matches-container {
+    margin-bottom: 100px;
 }
 
 .pagination__btn {

@@ -43,24 +43,25 @@
                         </div>
                     </div>
                     <div class="radar-container">
-                    <div id="widget-container-{{ match.id }}">
-                        <iframe 
-                            width="50%" 
-                            height="100" 
-                            src="https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id={{ match.id }}&widgetTheme=dark" 
-                            frameborder="-5" 
-                            scrolling="no"
-                            onload="checkWidget(this, '{{ match.id }}')"
-                            onerror="showError('{{ match.id }}')">
-                        </iframe>
-                        <div class="widget-error" id="error-{{ match.id }}" style="display:none;">
-                            <p>Widget de momentum não disponível para este jogo</p>
+                        <div id="widget-container-{{ match.id }}">
+                            <iframe 
+                                width="50%" 
+                                height="100" 
+                                src="https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id={{ match.id }}&widgetTheme=dark" 
+                                frameborder="-5" 
+                                scrolling="no"
+                                onload="checkWidget(this, '{{ match.id }}')"
+                                onerror="showError('{{ match.id }}')">
+                            </iframe>
+                            <div class="widget-error" id="error-{{ match.id }}" style="display:none;">
+                                <p>Widget de momentum não disponível para este jogo</p>
+                            </div>
                         </div>
-                    </div>
-                    <div style="font-size:12px;font-family:Arial,sans-serif">
-                        <a href="https://www.sofascore.com/pt/match/{{ match.homeTeam.name|lower|replace(' ', '-') }}-{{ match.awayTeam.name|lower|replace(' ', '-') }}/{{ match.id }}#id:{{ match.id }}" target="_blank" rel="noreferrer">
-                            Placar ao vivo {{ match.homeTeam.name }} - {{ match.awayTeam.name }}
-                        </a>
+                        <div style="font-size:12px;font-family:Arial,sans-serif">
+                            <a href="https://www.sofascore.com/pt/match/{{ match.homeTeam.name|lower|replace(' ', '-') }}-{{ match.awayTeam.name|lower|replace(' ', '-') }}/{{ match.id }}#id:{{ match.id }}" target="_blank" rel="noreferrer">
+                                Placar ao vivo {{ match.homeTeam.name }} - {{ match.awayTeam.name }}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

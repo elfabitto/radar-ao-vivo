@@ -41,37 +41,46 @@ function mudarPagina(novaPagina) {
     const inicio = (paginaAtual - 1) * JOGOS_POR_PAGINA;
     const fim = inicio + JOGOS_POR_PAGINA;
     
-    // Mostrar/ocultar jogos e gerenciar radares conforme a página
+    // Processar todos os jogos de uma vez
     matchRows.forEach((row, index) => {
         const isVisible = index >= inicio && index < fim;
-        row.style.display = isVisible ? 'block' : 'none';
         
-        // Gerenciar iframe do radar
-        const radarContainer = row.querySelector('.radar-container');
-        const iframe = radarContainer.querySelector('iframe');
-        const matchId = row.getAttribute('data-event-id');
-        
+        // Definir visibilidade do jogo
         if (isVisible) {
+            row.style.display = 'flex';
+            row.style.opacity = '1';
+            row.style.height = 'auto';
+            
             // Recarregar o radar apenas se estiver visível
+            const radarContainer = row.querySelector('.radar-container');
+            const iframe = radarContainer.querySelector('iframe');
+            const matchId = row.getAttribute('data-event-id');
+            
             const widgetUrl = `https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id=${matchId}&widgetTheme=light`;
             iframe.src = widgetUrl;
             checkWidget(iframe, matchId);
         } else {
-            // Limpar src do iframe se não estiver visível
-            iframe.src = '';
+            row.style.display = 'none';
+            row.style.opacity = '0';
+            row.style.height = '0';
+            
+            // Limpar iframe se não estiver visível
+            const iframe = row.querySelector('.radar-container iframe');
+            if (iframe) {
+                iframe.src = '';
+            }
         }
     });
     
     // Atualizar controles de paginação
     atualizarPaginacao(totalJogos);
+    
+    // Fazer scroll para o topo da página
+    window.scrollTo(0, 0);
 }
 
 function updateMatches() {
     const matchRows = document.querySelectorAll('.match-row');
-    // Aplicar paginação inicial se ainda não foi aplicada
-    if (document.querySelector('.match-row[style="display: none;"]') === null) {
-        mudarPagina(paginaAtual);
-    }
     
     fetch('/get_matches')
         .then(response => response.json())
@@ -119,12 +128,18 @@ function updateMatches() {
                     link.textContent = `Placar ao vivo ${match.homeTeam.name} - ${match.awayTeam.name}`;
                 }
             });
+            
+            // Reaplicar paginação após atualizar os dados
+            mudarPagina(paginaAtual);
         })
         .catch(error => console.error('Erro ao atualizar dados:', error));
 }
 
 // Função para inicializar as atualizações
 function initUpdates() {
+    // Aplicar paginação inicial
+    mudarPagina(1);
+    
     // Primeira atualização após 1 segundo
     setTimeout(updateMatches, 1000);
     // Atualizar dados a cada 10 segundos para manter o placar mais preciso
