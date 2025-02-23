@@ -93,7 +93,7 @@
 .radar-container {
     flex: 1;
     background: #1a1a1a;
-    padding: 0.5rem;
+    padding: 0rem;
     border-radius: 12px;
     border: 1px solid #333;
 }
@@ -127,7 +127,7 @@ header h1 {
 
 .live-icon {
     color: #ff0000;
-    font-size: 1.5rem;
+    font-size: 3.5rem;
     animation: piscando 1s infinite;
 }
 
