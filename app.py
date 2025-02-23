@@ -11,32 +11,72 @@ load_dotenv()
 
 app = Flask(__name__)
 
+def get_proxy():
+    # Lista de proxies gratuitos - você pode adicionar mais
+    proxies = [
+        'http://163.172.31.44:80',
+        'http://163.172.31.45:80',
+        'http://163.172.31.46:80',
+        'http://163.172.31.47:80',
+        'http://163.172.31.48:80'
+    ]
+    return random.choice(proxies)
+
 def get_live_matches():
     url = "https://api.sofascore.com/api/v1/sport/football/events/live"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Accept": "*/*",
-        "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Origin": "https://www.sofascore.com",
-        "Referer": "https://www.sofascore.com/",
-        "Sec-Ch-Ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
-        "Sec-Ch-Ua-Mobile": "?0",
-        "Sec-Ch-Ua-Platform": "\"Windows\"",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-site",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache"
-    }
     
-    max_retries = 3
-    retry_delay = 2  # segundos
+    # Lista de user agents para rotacionar
+    user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    ]
+    
+    max_retries = 5
+    retry_delay = 3  # segundos
     
     for attempt in range(max_retries):
         try:
+            # Rotaciona User-Agent e adiciona headers extras
+            current_user_agent = random.choice(user_agents)
+            headers = {
+                "User-Agent": current_user_agent,
+                "Accept": "*/*",
+                "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Origin": "https://www.sofascore.com",
+                "Referer": "https://www.sofascore.com/",
+                "Sec-Ch-Ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
+                "Sec-Ch-Ua-Mobile": "?0",
+                "Sec-Ch-Ua-Platform": "\"Windows\"",
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "same-site",
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache",
+                "X-Requested-With": "XMLHttpRequest"
+            }
+            
+            # Configura proxy
+            proxy = get_proxy()
+            proxies = {
+                'http': proxy,
+                'https': proxy
+            }
+            
             print(f"Tentativa {attempt + 1} de {max_retries} para buscar jogos")
-            response = requests.get(url, headers=headers, timeout=10)
+            print(f"Usando proxy: {proxy}")
+            print(f"User-Agent: {current_user_agent}")
+            
+            response = requests.get(
+                url,
+                headers=headers,
+                proxies=proxies,
+                timeout=15,
+                verify=False  # Necessário para alguns proxies
+            )
+            
             print(f"Status code da resposta: {response.status_code}")
             
             if response.status_code == 200:
@@ -49,7 +89,6 @@ def get_live_matches():
                         home_name = event.get('homeTeam', {}).get('name', '').lower().replace(' ', '-')
                         away_name = event.get('awayTeam', {}).get('name', '').lower().replace(' ', '-')
                         widget_id = f"{home_name}-{away_name}".lower().replace('-', '').replace('_', '')[:10]
-                        print(f"ID do jogo: {event_id}, Widget ID: {widget_id}")
                         
                         home_score = event.get('score', {}).get('home', 0)
                         away_score = event.get('score', {}).get('away', 0)
