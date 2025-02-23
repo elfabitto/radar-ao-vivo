@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos Ao Vivo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/radar.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                Jogos Ao Vivo 
+                <span class="live-count">({{ matches|length }})</span>
+                <span class="live-icon">•</span>
+            </h1>
+        </header>
+        
+        <main class="matches-container">
+            {% for match in matches %}
+            <div class="match-row" data-event-id="{{ match.id }}">
+                <div class="match-info">
+                    <div class="match-card">
+                        <div class="teams-vertical">
+                            <div class="team-score-container">
+                                <div class="team home">
+                                    <span class="team-name">{{ match.homeTeam.name }}</span>
+                                    <img src="{{ match.homeTeam.logo }}" alt="{{ match.homeTeam.name }}" class="team-logo">
+                                </div>
+                                <span class="score">{{ match.homeTeam.score }}</span>
+                            </div>
+                            <div class="team-score-container">
+                                <div class="team away">
+                                    <span class="team-name">{{ match.awayTeam.name }}</span>
+                                    <img src="{{ match.awayTeam.logo }}" alt="{{ match.awayTeam.name }}" class="team-logo">
+                                </div>
+                                <span class="score">{{ match.awayTeam.score }}</span>
+                            </div>
+                        </div>
+                        <div class="match-time">
+                            {{ match.time }}
+                        </div>
+                    </div>
+                    <div class="radar-container">
+                    <div id="widget-container-{{ match.id }}">
+                        <iframe 
+                            width="50%" 
+                            height="100" 
+                            src="https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id={{ match.id }}&widgetTheme=dark" 
+                            frameborder="-5" 
+                            scrolling="no"
+                            onload="checkWidget(this, '{{ match.id }}')"
+                            onerror="showError('{{ match.id }}')">
+                        </iframe>
+                        <div class="widget-error" id="error-{{ match.id }}" style="display:none;">
+                            <p>Widget de momentum não disponível para este jogo</p>
+                        </div>
+                    </div>
+                    <div style="font-size:12px;font-family:Arial,sans-serif">
+                        <a href="https://www.sofascore.com/pt/match/{{ match.homeTeam.name|lower|replace(' ', '-') }}-{{ match.awayTeam.name|lower|replace(' ', '-') }}/{{ match.id }}#id:{{ match.id }}" target="_blank" rel="noreferrer">
+                            Placar ao vivo {{ match.homeTeam.name }} - {{ match.awayTeam.name }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </main>
+        
+        <div class="pagination">
+            <!-- Controles de paginação serão inseridos via JavaScript -->
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}" type="text/javascript"></script>
+</body>
+</html>

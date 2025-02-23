@@ -1,0 +1,250 @@
+/* Layout principal */
+.match-row {
+    display: flex;
+    margin-bottom: 4rem;
+    margin-top: 1rem;
+    gap: 10rem;
+}
+
+.match-info {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Card do jogo */
+.match-card {
+    flex: 0 0 220px;
+    padding: 0.75rem;
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #333;
+    position: relative;
+    color: #fff;
+}
+
+/* Times e placar */
+.teams-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 2rem;
+}
+
+.team-score-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.team-logo {
+    width: 20px;
+    height: 20px;
+    order: 2;
+}
+
+.team-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    order: 1;
+}
+
+.score {
+    background: #2c2c2c;
+    color: #00ff7f;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    min-width: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    order: 3;
+}
+
+/* Tempo da partida */
+.match-time {
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.25rem;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    background: #2c2c2c;
+    color: #00ff7f;
+    border-radius: 4px;
+    writing-mode: vertical-lr;
+    transform-origin: left center;
+}
+
+/* Container do radar */
+.radar-container {
+    flex: 1;
+    background: #1a1a1a;
+    padding: 0.5rem;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+/* Cabeçalho */
+header {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    color: #fff;
+    text-align: center;
+}
+
+header h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.live-count {
+    background-color: #2c2c2c;
+    color: #00ff7f;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.live-icon {
+    color: #ff0000;
+    font-size: 1.5rem;
+    animation: piscando 1s infinite;
+}
+
+@keyframes piscando {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+.widget-error {
+    background: #2c2c2c;
+    border: 1px solid #333;
+    color: #fff;
+}
+
+.widget-error p {
+    margin: 0;
+    padding: 10px;
+}
+
+/* Estilos para paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1rem;
+}
+
+.pagination__btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: #2c2c2c;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.pagination__btn[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination__info {
+    font-size: 14px;
+    color: #888;
+}
+
+@media (max-width: 1024px) {
+    .match-info {
+        flex-direction: column;
+    }
+
+    .match-card {
+        flex: none;
+        width: 100%;
+    }
+
+    .radar-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .match-card {
+        border-radius: 12px;
+        padding: 0.75rem;
+    }
+    
+    .radar-container {
+        border-radius: 12px;
+        padding: 0.75rem;
+    }
+
+    .team-name {
+        font-size: 0.9rem;
+    }
+
+    .score {
+        padding: 3px 8px;
+        font-size: 0.9rem;
+    }
+
+    .match-time {
+        font-size: 0.7rem;
+        padding: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .match-row {
+        margin-bottom: 1rem;
+    }
+
+    .team-logo {
+        width: 20px;
+        height: 20px;
+    }
+
+    .team-name {
+        font-size: 0.85rem;
+    }
+
+    .pagination {
+        gap: 0.5rem;
+        margin: 1rem 0;
+        padding: 0.5rem;
+    }
+
+    .pagination__btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 12px;
+    }
+
+    .pagination__info {
+        font-size: 12px;
+    }
+}
