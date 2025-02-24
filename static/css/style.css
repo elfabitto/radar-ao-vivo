@@ -1,11 +1,11 @@
 :root {
     --primary-color: #ffffff;
-    --secondary-color: #888888;
-    --accent-color: #00ff7f;
+    --secondary-color: #a5aae0;
+    --accent-color: #7dff00;
     --text-color: #ffffff;
-    --background-color: #121212;
-    --card-background: #1a1a1a;
-    --border-color: #333333;
+    --background-color: #4d57b6;
+    --card-background: #3a4292;
+    --border-color: #2d3470;
 }
 
 * {
@@ -19,42 +19,52 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
-    padding: 10px;
+    padding: 2px;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px;
+    
 }
 
 header {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 4px;
     background-color: var(--card-background);
-    padding: 15px;
-    border-radius: 12px;
+    padding: 2px;
+    border-radius: 2px;
     border: 1px solid var(--border-color);
 }
 
 h1 {
     color: var(--text-color);
-    font-size: 1.5rem;
-    margin-bottom: 5px;
+    font-size: 1.2rem;
+    margin: 0;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+}
+
+.live-icon-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.live-svg-icon {
+    width: 12px;
+    height: 12px;
+    animation: pulse 1.5s ease-in-out infinite;
 }
 
 .live-count {
     color: var(--accent-color);
-    font-size: 1.2rem;
-}
-
-.live-icon {
-    color: var(--accent-color);
-    font-size: 1.5rem;
-    animation: pulse 1.5s ease-in-out infinite;
+    font-size: 1rem;
 }
 
 @keyframes pulse {
