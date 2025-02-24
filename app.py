@@ -8,6 +8,22 @@ from dotenv import load_dotenv
 import time
 from functools import lru_cache
 import urllib3
+import logging
+import cloudscraper
+from fake_useragent import UserAgent
+import socket
+import ssl
+
+# Configurar logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('radar.log')
+    ]
+)
+logger = logging.getLogger('radar-app')
 
 # Desabilitar avisos de SSL
 urllib3.disable_warnings()
@@ -16,81 +32,205 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Cache por 30 segundos
+# Inicializar o gerador de User-Agent
+ua = UserAgent()
+
+# Cache por 60 segundos
 @lru_cache(maxsize=1)
 def get_cached_timestamp():
-    return int(time.time() / 30)
+    return int(time.time() / 60)
+
+# Cria uma instância do cloudscraper
+def criar_scraper():
+    return cloudscraper.create_scraper(
+        browser={
+            'browser': random.choice(['chrome', 'firefox']),
+            'platform': random.choice(['windows', 'darwin', 'linux']),
+            'mobile': False
+        },
+        delay=5
+    )
 
 def get_live_matches():
-    # Força atualização do cache a cada 30 segundos
+    # Força atualização do cache a cada 60 segundos
     _ = get_cached_timestamp()
     
     url = "https://api.sofascore.com/api/v1/sport/football/events/live"
     
-    # Lista de user agents modernos
-    user_agents = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    max_retries = 5
+    retry_delay_base = 3  # segundos (base)
+    
+    # Estratégias disponíveis
+    estrategias = [
+        "cloudscraper",  # Usar cloudscraper
+        "requests_ua",   # Usar requests com fake-useragent
+        "completo"       # Usar requests com headers completos
     ]
     
-    max_retries = 3
-    retry_delay = 2  # segundos
-    
     for attempt in range(max_retries):
+        # Escolher estratégia
+        estrategia = random.choice(estrategias)
+        logger.info(f"Tentativa {attempt + 1} de {max_retries} usando estratégia: {estrategia}")
+        
         try:
-            # Rotaciona User-Agent e adiciona headers mais realistas
-            current_user_agent = random.choice(user_agents)
+            response = None
             
-            # Simula um timestamp real
-            timestamp = int(time.time() * 1000)
+            # Estratégia 1: Usar cloudscraper
+            if estrategia == "cloudscraper":
+                scraper = criar_scraper()
+                
+                logger.info("Usando cloudscraper para contornar proteções")
+                
+                # Primeiro acessa a página principal
+                logger.info("Acessando página principal do SofaScore...")
+                scraper.get("https://www.sofascore.com/")
+                
+                # Delay para simular comportamento humano
+                delay = random.uniform(2, 5)
+                logger.info(f"Aguardando {delay:.2f} segundos...")
+                time.sleep(delay)
+                
+                # Acessa a página de futebol
+                logger.info("Acessando página de futebol...")
+                scraper.get("https://www.sofascore.com/football/livescore")
+                
+                # Delay para simular comportamento humano
+                delay = random.uniform(3, 7)
+                logger.info(f"Aguardando {delay:.2f} segundos...")
+                time.sleep(delay)
+                
+                # Faz a requisição para a API
+                logger.info(f"Acessando API: {url}")
+                response = scraper.get(url)
+                
+            # Estratégia 2: Usar requests com fake-useragent
+            elif estrategia == "requests_ua":
+                # Gera um User-Agent aleatório
+                current_user_agent = ua.random
+                
+                # Headers básicos
+                headers = {
+                    "User-Agent": current_user_agent,
+                    "Accept": "application/json, text/plain, */*",
+                    "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+                    "Origin": "https://www.sofascore.com",
+                    "Referer": "https://www.sofascore.com/football/livescore",
+                }
+                
+                logger.info(f"Usando fake-useragent: {current_user_agent}")
+                
+                session = requests.Session()
+                
+                # Primeiro acessa a página principal
+                logger.info("Acessando página principal do SofaScore...")
+                session.get(
+                    "https://www.sofascore.com/",
+                    headers=headers,
+                    timeout=15
+                )
+                
+                # Delay para simular comportamento humano
+                delay = random.uniform(2, 5)
+                logger.info(f"Aguardando {delay:.2f} segundos...")
+                time.sleep(delay)
+                
+                # Acessa a página de futebol
+                logger.info("Acessando página de futebol...")
+                session.get(
+                    "https://www.sofascore.com/football/livescore",
+                    headers=headers,
+                    timeout=15
+                )
+                
+                # Delay para simular comportamento humano
+                delay = random.uniform(3, 7)
+                logger.info(f"Aguardando {delay:.2f} segundos...")
+                time.sleep(delay)
+                
+                # Faz a requisição para a API
+                logger.info(f"Acessando API: {url}")
+                response = session.get(
+                    url,
+                    headers=headers,
+                    timeout=15
+                )
+                
+            # Estratégia 3: Usar requests com headers completos
+            else:  # completo
+                # Gera um User-Agent aleatório
+                current_user_agent = ua.random
+                
+                # Simula um timestamp real
+                timestamp = int(time.time() * 1000)
+                
+                # Gera um ID de sessão aleatório
+                session_id = ''.join(random.choices('0123456789abcdef', k=32))
+                
+                # Headers mais completos e realistas
+                headers = {
+                    "User-Agent": current_user_agent,
+                    "Accept": "application/json, text/plain, */*",
+                    "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Origin": "https://www.sofascore.com",
+                    "Referer": f"https://www.sofascore.com/football/livescore/{timestamp}",
+                    "Sec-Ch-Ua": f"\"Chromium\";v=\"{random.randint(100, 122)}\", \"Not(A:Brand\";v=\"{random.randint(8, 24)}\", \"Google Chrome\";v=\"{random.randint(100, 122)}\"",
+                    "Sec-Ch-Ua-Mobile": "?0",
+                    "Sec-Ch-Ua-Platform": f"\"{random.choice(['Windows', 'macOS', 'Linux'])}\"",
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "same-site",
+                    "If-None-Match": f"W/\"{random.randint(1000, 9999)}\"",
+                    "Cache-Control": "no-cache",
+                    "Pragma": "no-cache",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Cookie": f"_gid=GA1.2.{random.randint(100000, 999999)}; _ga=GA1.2.{random.randint(100000, 999999)}; __cf_bm={session_id}",
+                    "Connection": "keep-alive",
+                    "TE": "trailers"
+                }
+                
+                logger.info(f"Usando headers completos com User-Agent: {current_user_agent}")
+                
+                session = requests.Session()
+                
+                # Primeiro acessa a página principal
+                logger.info("Acessando página principal do SofaScore...")
+                session.get(
+                    "https://www.sofascore.com/",
+                    headers=headers,
+                    timeout=15
+                )
+                
+                # Delay para simular comportamento humano
+                delay = random.uniform(2, 5)
+                logger.info(f"Aguardando {delay:.2f} segundos...")
+                time.sleep(delay)
+                
+                # Acessa a página de futebol
+                logger.info("Acessando página de futebol...")
+                session.get(
+                    "https://www.sofascore.com/football/livescore",
+                    headers=headers,
+                    timeout=15
+                )
+                
+                # Delay para simular comportamento humano
+                delay = random.uniform(3, 7)
+                logger.info(f"Aguardando {delay:.2f} segundos...")
+                time.sleep(delay)
+                
+                # Faz a requisição para a API
+                logger.info(f"Acessando API: {url}")
+                response = session.get(
+                    url,
+                    headers=headers,
+                    timeout=15
+                )
             
-            headers = {
-                "User-Agent": current_user_agent,
-                "Accept": "*/*",
-                "Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Origin": "https://www.sofascore.com",
-                "Referer": f"https://www.sofascore.com/football/livescore/{timestamp}",
-                "Sec-Ch-Ua": "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\"",
-                "Sec-Ch-Ua-Mobile": "?0",
-                "Sec-Ch-Ua-Platform": "\"Windows\"",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site",
-                "If-None-Match": f"W/\"{random.randint(1000, 9999)}\"",
-                "Cache-Control": "no-cache",
-                "Pragma": "no-cache",
-                "X-Requested-With": "XMLHttpRequest",
-                "Cookie": f"_gid={random.randint(100000, 999999)}; _ga={random.randint(100000, 999999)}"
-            }
+            # Verifica a resposta
+            logger.info(f"Status code da resposta: {response.status_code}")
             
-            print(f"Tentativa {attempt + 1} de {max_retries} para buscar jogos")
-            print(f"User-Agent: {current_user_agent}")
-            
-            session = requests.Session()
-            
-            # Primeiro faz uma requisição para a página principal
-            session.get(
-                "https://www.sofascore.com/football/livescore",
-                headers=headers,
-                timeout=10
-            )
-            
-            # Pequeno delay para simular comportamento humano
-            time.sleep(random.uniform(0.5, 1.5))
-            
-            # Agora faz a requisição para a API
-            response = session.get(
-                url,
-                headers=headers,
-                timeout=10
-            )
-            
-            print(f"Status code da resposta: {response.status_code}")
-            
-            if response.status_code == 200:
+            if response and response.status_code == 200:
                 data = response.json()
                 matches = []
                 
@@ -133,19 +273,24 @@ def get_live_matches():
                 
                 return matches
             else:
-                print(f"Erro ao buscar jogos. Status: {response.status_code}")
+                status_code = response.status_code if response else "Sem resposta"
+                logger.warning(f"Erro ao buscar jogos. Status: {status_code}")
                 if attempt < max_retries - 1:
-                    print(f"Aguardando {retry_delay} segundos antes de tentar novamente...")
+                    # Tempo de espera exponencial entre tentativas
+                    retry_delay = retry_delay_base * (2 ** attempt) + random.uniform(1, 5)
+                    logger.info(f"Aguardando {retry_delay:.2f} segundos antes de tentar novamente...")
                     time.sleep(retry_delay)
                     continue
         except Exception as e:
-            print(f"Erro ao buscar jogos: {e}")
+            logger.error(f"Erro ao buscar jogos: {e}")
             if attempt < max_retries - 1:
-                print(f"Aguardando {retry_delay} segundos antes de tentar novamente...")
+                # Tempo de espera exponencial entre tentativas
+                retry_delay = retry_delay_base * (2 ** attempt) + random.uniform(1, 5)
+                logger.info(f"Aguardando {retry_delay:.2f} segundos antes de tentar novamente...")
                 time.sleep(retry_delay)
                 continue
     
-    print("Todas as tentativas falharam")
+    logger.error("Todas as tentativas falharam")
     return []
 
 def format_match_time(match):
