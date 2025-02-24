@@ -38,7 +38,9 @@ A aplicação estará disponível em http://127.0.0.1:5000
 
 ## Implantação na Web
 
-Para implantar a aplicação na web, use o arquivo de configuração do Gunicorn otimizado para produção:
+### Implantação Local
+
+Para implantar a aplicação localmente, use o arquivo de configuração do Gunicorn otimizado para produção:
 
 ```bash
 # Instalar dependências
@@ -53,6 +55,25 @@ Este arquivo de configuração:
 - Configura o número adequado de workers e threads
 - Define timeouts mais longos para lidar com requisições que podem demorar mais
 - Configura logs detalhados para monitoramento
+
+### Implantação no Render
+
+Para implantar a aplicação no Render, você tem duas opções:
+
+#### Opção 1: Usar o arquivo render.yaml (recomendado)
+
+1. Certifique-se de que o arquivo `render.yaml` está no diretório raiz do seu repositório.
+2. Conecte seu repositório ao Render.
+3. O Render detectará automaticamente o arquivo `render.yaml` e configurará o serviço de acordo.
+
+#### Opção 2: Configuração manual
+
+Se preferir configurar manualmente, siga as instruções no arquivo `render_config.md`.
+
+Em resumo:
+1. Modifique o Start Command para: `gunicorn app_web:app --workers=4 --threads=2 --timeout=120 --bind=0.0.0.0:$PORT`
+2. Adicione a variável de ambiente `PRODUCTION=true`
+3. Certifique-se de que o arquivo `requirements.txt` inclui todas as dependências necessárias
 
 ## Opções Adicionais para Contornar Bloqueios
 

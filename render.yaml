@@ -1,0 +1,19 @@
+# Configuração do Render
+services:
+  # Serviço web
+  - type: web
+    name: radar-ao-vivo
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app_web:app --workers=4 --threads=2 --timeout=120 --bind=0.0.0.0:$PORT
+    envVars:
+      - key: PRODUCTION
+        value: "true"
+      - key: PYTHON_VERSION
+        value: "3.13.0"
+    healthCheckPath: /health
+    autoDeploy: true
+    # Configurações de recursos
+    plan: free
+    # Configurações de região
+    region: oregon # Você pode mudar para a região mais próxima de você
