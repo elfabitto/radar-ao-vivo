@@ -153,7 +153,7 @@ def format_match_time(match):
         status = match['status']
         
         if status['description'] == 'Halftime':
-            return 'Int'
+            return 'Intervalo'
         elif status['description'] == 'Ended':
             return 'Fim'
         elif status['description'] == 'Not started':
@@ -162,9 +162,9 @@ def format_match_time(match):
         if status['type'] == 'inprogress':
             elapsed = status.get('elapsed', 0)
             if elapsed > 45 or status.get('description', '').lower().startswith('2nd'):
-                return "2ºT"
+                return "2ºTempo"
             else:
-                return "1ºT"
+                return "1ºTempo"
         
         return 'Início'
     except Exception as e:
