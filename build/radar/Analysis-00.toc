@@ -30,6 +30,10 @@
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\static\\js\\app.js',
    'DATA'),
+  ('static\\radar.ico',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\static\\radar.ico',
+   'DATA'),
   ('templates\\index.html',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\templates\\index.html',
@@ -1417,10 +1421,10 @@
   ('pathlib._abc',
    'C:\\Program Files\\Python313\\Lib\\pathlib\\_abc.py',
    'PYMODULE'),
-  ('_py_abc', 'C:\\Program Files\\Python313\\Lib\\_py_abc.py', 'PYMODULE'),
   ('stringprep',
    'C:\\Program Files\\Python313\\Lib\\stringprep.py',
    'PYMODULE'),
+  ('_py_abc', 'C:\\Program Files\\Python313\\Lib\\_py_abc.py', 'PYMODULE'),
   ('tracemalloc',
    'C:\\Program Files\\Python313\\Lib\\tracemalloc.py',
    'PYMODULE'),
@@ -2277,11 +2281,11 @@
   ('libffi-8.dll',
    'C:\\Program Files\\Python313\\DLLs\\libffi-8.dll',
    'BINARY'),
-  ('libcrypto-3.dll',
-   'C:\\Program Files\\Python313\\DLLs\\libcrypto-3.dll',
-   'BINARY'),
   ('libssl-3.dll',
    'C:\\Program Files\\Python313\\DLLs\\libssl-3.dll',
+   'BINARY'),
+  ('libcrypto-3.dll',
+   'C:\\Program Files\\Python313\\DLLs\\libcrypto-3.dll',
    'BINARY'),
   ('VCRUNTIME140_1.dll',
    'C:\\Program Files\\Python313\\VCRUNTIME140_1.dll',
@@ -2304,6 +2308,10 @@
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\static\\js\\app.js',
    'DATA'),
+  ('static\\radar.ico',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\static\\radar.ico',
+   'DATA'),
   ('templates\\index.html',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\templates\\index.html',
@@ -2320,14 +2328,6 @@
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\RECORD',
    'DATA'),
-  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\top_level.txt',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\top_level.txt',
-   'DATA'),
-  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\LICENSE',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\LICENSE',
-   'DATA'),
   ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\METADATA',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\METADATA',
@@ -2340,82 +2340,114 @@
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\INSTALLER',
    'DATA'),
+  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\LICENSE',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\LICENSE',
+   'DATA'),
   ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\WHEEL',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\WHEEL',
+   'DATA'),
+  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\top_level.txt',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\top_level.txt',
    'DATA'),
   ('setuptools\\_vendor\\jaraco\\text\\Lorem ipsum.txt',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\jaraco\\text\\Lorem '
    'ipsum.txt',
    'DATA'),
-  ('MarkupSafe-3.0.2.dist-info\\LICENSE.txt',
+  ('itsdangerous-2.2.0.dist-info\\METADATA',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\LICENSE.txt',
-   'DATA'),
-  ('itsdangerous-2.2.0.dist-info\\RECORD',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\RECORD',
-   'DATA'),
-  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\WHEEL',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\WHEEL',
-   'DATA'),
-  ('flask-3.1.0.dist-info\\METADATA',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\METADATA',
-   'DATA'),
-  ('flask-3.1.0.dist-info\\RECORD',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\RECORD',
-   'DATA'),
-  ('flask-3.1.0.dist-info\\LICENSE.txt',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\LICENSE.txt',
-   'DATA'),
-  ('MarkupSafe-3.0.2.dist-info\\RECORD',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\RECORD',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\METADATA',
    'DATA'),
   ('itsdangerous-2.2.0.dist-info\\LICENSE.txt',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\LICENSE.txt',
    'DATA'),
-  ('MarkupSafe-3.0.2.dist-info\\INSTALLER',
+  ('werkzeug-3.1.3.dist-info\\METADATA',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\INSTALLER',
-   'DATA'),
-  ('MarkupSafe-3.0.2.dist-info\\METADATA',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\METADATA',
-   'DATA'),
-  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\LICENSE.txt',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\LICENSE.txt',
-   'DATA'),
-  ('itsdangerous-2.2.0.dist-info\\INSTALLER',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\INSTALLER',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\werkzeug-3.1.3.dist-info\\METADATA',
    'DATA'),
   ('itsdangerous-2.2.0.dist-info\\WHEEL',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\WHEEL',
    'DATA'),
-  ('werkzeug-3.1.3.dist-info\\METADATA',
+  ('itsdangerous-2.2.0.dist-info\\INSTALLER',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\werkzeug-3.1.3.dist-info\\METADATA',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\INSTALLER',
+   'DATA'),
+  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\entry_points.txt',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\entry_points.txt',
+   'DATA'),
+  ('MarkupSafe-3.0.2.dist-info\\top_level.txt',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\top_level.txt',
+   'DATA'),
+  ('flask-3.1.0.dist-info\\INSTALLER',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\INSTALLER',
+   'DATA'),
+  ('flask-3.1.0.dist-info\\WHEEL',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\WHEEL',
+   'DATA'),
+  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\RECORD',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\RECORD',
+   'DATA'),
+  ('MarkupSafe-3.0.2.dist-info\\RECORD',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\RECORD',
+   'DATA'),
+  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\LICENSE.txt',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\LICENSE.txt',
    'DATA'),
   ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\METADATA',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\METADATA',
    'DATA'),
+  ('MarkupSafe-3.0.2.dist-info\\LICENSE.txt',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\LICENSE.txt',
+   'DATA'),
+  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\REQUESTED',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\REQUESTED',
+   'DATA'),
+  ('flask-3.1.0.dist-info\\METADATA',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\METADATA',
+   'DATA'),
+  ('flask-3.1.0.dist-info\\REQUESTED',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\REQUESTED',
+   'DATA'),
+  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\INSTALLER',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\INSTALLER',
+   'DATA'),
   ('werkzeug-3.1.3.dist-info\\WHEEL',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\werkzeug-3.1.3.dist-info\\WHEEL',
    'DATA'),
-  ('flask-3.1.0.dist-info\\WHEEL',
+  ('flask-3.1.0.dist-info\\LICENSE.txt',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\WHEEL',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\LICENSE.txt',
+   'DATA'),
+  ('flask-3.1.0.dist-info\\entry_points.txt',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\entry_points.txt',
+   'DATA'),
+  ('MarkupSafe-3.0.2.dist-info\\WHEEL',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\WHEEL',
+   'DATA'),
+  ('flask-3.1.0.dist-info\\RECORD',
+   'C:\\Users\\DEUS SEJA '
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\RECORD',
    'DATA'),
   ('werkzeug-3.1.3.dist-info\\INSTALLER',
    'C:\\Users\\DEUS SEJA '
@@ -2425,49 +2457,25 @@
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\werkzeug-3.1.3.dist-info\\LICENSE.txt',
    'DATA'),
-  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\RECORD',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\RECORD',
-   'DATA'),
-  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\INSTALLER',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\INSTALLER',
-   'DATA'),
-  ('MarkupSafe-3.0.2.dist-info\\top_level.txt',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\top_level.txt',
-   'DATA'),
-  ('flask-3.1.0.dist-info\\REQUESTED',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\REQUESTED',
-   'DATA'),
   ('werkzeug-3.1.3.dist-info\\RECORD',
    'C:\\Users\\DEUS SEJA '
    'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\werkzeug-3.1.3.dist-info\\RECORD',
    'DATA'),
-  ('MarkupSafe-3.0.2.dist-info\\WHEEL',
+  ('MarkupSafe-3.0.2.dist-info\\INSTALLER',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\WHEEL',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\INSTALLER',
    'DATA'),
-  ('flask-3.1.0.dist-info\\entry_points.txt',
+  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\WHEEL',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\entry_points.txt',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\WHEEL',
    'DATA'),
-  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\REQUESTED',
+  ('itsdangerous-2.2.0.dist-info\\RECORD',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\REQUESTED',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\RECORD',
    'DATA'),
-  ('setuptools\\_vendor\\wheel-0.43.0.dist-info\\entry_points.txt',
+  ('MarkupSafe-3.0.2.dist-info\\METADATA',
    'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\setuptools\\_vendor\\wheel-0.43.0.dist-info\\entry_points.txt',
-   'DATA'),
-  ('itsdangerous-2.2.0.dist-info\\METADATA',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\itsdangerous-2.2.0.dist-info\\METADATA',
-   'DATA'),
-  ('flask-3.1.0.dist-info\\INSTALLER',
-   'C:\\Users\\DEUS SEJA '
-   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\flask-3.1.0.dist-info\\INSTALLER',
+   'LOUVADO\\Projetos-Py\\radar-ao-vivo\\venv\\Lib\\site-packages\\MarkupSafe-3.0.2.dist-info\\METADATA',
    'DATA'),
   ('base_library.zip',
    'C:\\Users\\DEUS SEJA '
