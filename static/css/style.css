@@ -72,7 +72,7 @@ h1 {
 .matches-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 30px;
 }
 
 .match-row {
@@ -86,17 +86,19 @@ h1 {
     border-radius: 12px;
     padding: 15px;
     border: 1px solid var(--border-color);
-    flex: 0 0 350px;
+    width: 350px;
+    flex-shrink: 0;
 }
 
 .radar-container {
     width: 350px;
     height: 143px;
+    min-height: 143px;
+    max-height: 143px;
     background-color: var(--card-background);
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    margin: 0 5px;
     border: 1px solid var(--border-color);
     flex-shrink: 0;
 }
@@ -122,10 +124,11 @@ h1 {
 
 .radar-container iframe {
     border: none;
-    width: 100%;
+    width: calc(100% + 20px);
     height: 286px;
     position: absolute;
     top: 0;
+    left: -10px;
 }
 
 .radar-container a {
@@ -196,18 +199,18 @@ h1 {
         font-size: 1.3rem;
     }
 
+    .matches-container {
+        gap: 40px;
+    }
+
     .match-row {
         flex-direction: column;
+        gap: 25px;
     }
 
     .match-card {
-        flex: none;
-        width: 100%;
-        padding: 8px;
-    }
-
-    .radar-container {
-        margin: 0 auto;
+        width: 350px;
+        padding: 12px;
     }
 
     .team-name {
