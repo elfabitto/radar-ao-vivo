@@ -90,16 +90,15 @@ h1 {
 }
 
 .radar-container {
-    flex: 1;
-    min-width: 350px;
-    max-width: 800px;
+    width: 350px;
+    height: 143px;
     background-color: var(--card-background);
     border-radius: 12px;
     overflow: hidden;
     position: relative;
     margin: 0 5px;
-    padding-bottom: 20px;
     border: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .widget-error {
@@ -121,26 +120,12 @@ h1 {
     line-height: 1.4;
 }
 
-.radar-container {
-    flex: 1;
-    min-width: 350px;
-    max-width: 800px;
-    background-color: var(--card-background);
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-    margin: 0 5px;
-    padding-bottom: 20px;
-    height: 143px; /* Altura visível do container */
-}
-
 .radar-container iframe {
     border: none;
     width: 100%;
-    height: 286px; /* Mantém altura original do iframe */
-    margin-bottom: 5px;
-    position: relative;
-    top: 0; /* Mostra a parte superior do widget */
+    height: 286px;
+    position: absolute;
+    top: 0;
 }
 
 .radar-container a {
@@ -222,16 +207,7 @@ h1 {
     }
 
     .radar-container {
-        width: 100%;
-        height: 143px;
-        min-width: 100%;
-        max-width: 100%;
-        overflow: hidden;
-    }
-
-    .radar-container iframe {
-        height: 286px;
-        top: 0;
+        margin: 0 auto;
     }
 
     .team-name {
