@@ -19,8 +19,8 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('radar_web.log')
+        logging.StreamHandler()
+        # Removido FileHandler para evitar criação do arquivo radar_web.log
     ]
 )
 logger = logging.getLogger('radar-app-web')
