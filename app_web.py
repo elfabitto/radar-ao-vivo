@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_from_directory
 import requests
 import json
 from datetime import datetime
@@ -429,6 +429,11 @@ def index():
 @app.route('/health')
 def health():
     return jsonify({"status": "ok", "timestamp": datetime.now().isoformat()})
+
+# Rota para servir o favicon
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('static', 'radar.ico')
 
 # Rota para forçar uma estratégia específica (útil para testes)
 @app.route('/test_strategy/<strategy>')
