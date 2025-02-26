@@ -188,43 +188,88 @@ def get_live_matches():
 
 def processar_resposta_sofascore(data):
     matches = []
+    logger.info(f"Processando resposta Sofascore: {json.dumps(data)[:500]}...")  # Log da estrutura de dados (primeiros 500 caracteres)
     
     for event in data.get('events', []):
-        if event.get('status', {}).get('type') == 'inprogress':
-            event_id = str(event.get('id'))
-            home_name = event.get('homeTeam', {}).get('name', '').lower().replace(' ', '-')
-            away_name = event.get('awayTeam', {}).get('name', '').lower().replace(' ', '-')
-            widget_id = f"{home_name}-{away_name}".lower().replace('-', '').replace('_', '')[:10]
-            
-            home_score = event.get('score', {}).get('home', 0)
-            away_score = event.get('score', {}).get('away', 0)
-            
-            formatted_match = {
-                'id': event_id,
-                'widget_id': widget_id,
-                'status': {
-                    'type': 'inprogress',
-                    'description': event.get('status', {}).get('description', 'Em andamento'),
-                    'elapsed': event.get('status', {}).get('elapsed', 0),
-                    'addedTime': event.get('status', {}).get('addedTime', 0),
-                    'period': event.get('status', {}).get('period', 1)
-                },
-                'homeTeam': {
-                    'name': event.get('homeTeam', {}).get('name'),
-                    'id': event.get('homeTeam', {}).get('id'),
-                    'logo': f"https://api.sofascore.com/api/v1/team/{event.get('homeTeam', {}).get('id')}/image"
-                },
-                'awayTeam': {
-                    'name': event.get('awayTeam', {}).get('name'),
-                    'id': event.get('awayTeam', {}).get('id'),
-                    'logo': f"https://api.sofascore.com/api/v1/team/{event.get('awayTeam', {}).get('id')}/image"
-                },
-                'score': {
-                    'home': home_score,
-                    'away': away_score
+        try:
+            if event.get('status', {}).get('type') == 'inprogress':
+                event_id = str(event.get('id'))
+                home_name = event.get('homeTeam', {}).get('name', '').lower().replace(' ', '-')
+                away_name = event.get('awayTeam', {}).get('name', '').lower().replace(' ', '-')
+                widget_id = f"{home_name}-{away_name}".lower().replace('-', '').replace('_', '')[:10]
+                
+                # Log completo da estrutura do evento para debug
+                logger.info(f"Evento: {json.dumps(event)}")
+                
+                # Verificar a estrutura correta do placar
+                score = event.get('score', {})
+                logger.info(f"Estrutura do placar: {json.dumps(score)}")
+                
+                # Verificar se há estruturas aninhadas para o placar
+                home_score = None
+                away_score = None
+                
+                # Nova estrutura: verificar homeScore e awayScore como objetos separados
+                if 'homeScore' in event and 'awayScore' in event:
+                    home_score = event.get('homeScore', {}).get('current')
+                    away_score = event.get('awayScore', {}).get('current')
+                    logger.info(f"Placar encontrado em 'homeScore/awayScore': {home_score}-{away_score}")
+                # Estrutura antiga: tentar diferentes caminhos para o placar
+                elif 'current' in score:
+                    home_score = score.get('current', {}).get('home')
+                    away_score = score.get('current', {}).get('away')
+                    logger.info(f"Placar encontrado em 'current': {home_score}-{away_score}")
+                elif 'normaltime' in score:
+                    home_score = score.get('normaltime', {}).get('home')
+                    away_score = score.get('normaltime', {}).get('away')
+                    logger.info(f"Placar encontrado em 'normaltime': {home_score}-{away_score}")
+                elif 'display' in score:
+                    home_score = score.get('display', {}).get('home')
+                    away_score = score.get('display', {}).get('away')
+                    logger.info(f"Placar encontrado em 'display': {home_score}-{away_score}")
+                else:
+                    # Caminho padrão como no código original
+                    home_score = score.get('home')
+                    away_score = score.get('away')
+                    logger.info(f"Placar encontrado no caminho padrão: {home_score}-{away_score}")
+                
+                # Fallback para 0 se ainda for None
+                if home_score is None:
+                    home_score = 0
+                if away_score is None:
+                    away_score = 0
+                
+                logger.info(f"Placar final: {home_score}-{away_score} para {home_name} vs {away_name}")
+                
+                formatted_match = {
+                    'id': event_id,
+                    'widget_id': widget_id,
+                    'status': {
+                        'type': 'inprogress',
+                        'description': event.get('status', {}).get('description', 'Em andamento'),
+                        'elapsed': event.get('status', {}).get('elapsed', 0),
+                        'addedTime': event.get('status', {}).get('addedTime', 0),
+                        'period': event.get('status', {}).get('period', 1)
+                    },
+                    'homeTeam': {
+                        'name': event.get('homeTeam', {}).get('name'),
+                        'id': event.get('homeTeam', {}).get('id'),
+                        'logo': f"https://api.sofascore.com/api/v1/team/{event.get('homeTeam', {}).get('id')}/image"
+                    },
+                    'awayTeam': {
+                        'name': event.get('awayTeam', {}).get('name'),
+                        'id': event.get('awayTeam', {}).get('id'),
+                        'logo': f"https://api.sofascore.com/api/v1/team/{event.get('awayTeam', {}).get('id')}/image"
+                    },
+                    'score': {
+                        'home': home_score,
+                        'away': away_score
+                    }
                 }
-            }
-            matches.append(formatted_match)
+                matches.append(formatted_match)
+        except Exception as e:
+            logger.error(f"Erro ao processar evento: {e}")
+            continue
     
     return matches
 
