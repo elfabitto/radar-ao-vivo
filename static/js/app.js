@@ -1,10 +1,13 @@
 // Configurações de paginação
 const JOGOS_POR_PAGINA = 10;
 let paginaAtual = 1;
+let abaAtual = 'todos';
 
-// Função para atualizar os dados dos jogos
 // Objeto para armazenar os placares anteriores
 const placaresAnteriores = {};
+
+// Array para armazenar os IDs dos jogos favoritos
+let favoritos = [];
 
 // Função para atualizar a paginação
 function atualizarPaginacao(totalJogos) {
@@ -32,7 +35,11 @@ function atualizarPaginacao(totalJogos) {
 
 // Função para mudar de página
 function mudarPagina(novaPagina) {
-    const matchRows = document.querySelectorAll('.match-row');
+    // Selecionar container ativo
+    const containerAtivo = document.getElementById(`${abaAtual}-container`);
+    if (!containerAtivo) return;
+    
+    const matchRows = containerAtivo.querySelectorAll('.match-row');
     const totalJogos = matchRows.length;
     const totalPaginas = Math.ceil(totalJogos / JOGOS_POR_PAGINA);
     
@@ -53,38 +60,10 @@ function mudarPagina(novaPagina) {
             row.style.display = 'flex';
             row.style.opacity = '1';
             row.style.height = 'auto';
-            
-            // Recarregar o radar apenas se estiver visível
-            const radarContainer = row.querySelector('.radar-container');
-            const iframe = radarContainer.querySelector('iframe');
-            const matchId = row.getAttribute('data-event-id');
-            
-            // Adicionar timestamp para evitar cache
-            const timestamp = new Date().getTime();
-            const widgetUrl = `https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id=${matchId}&widgetTheme=light&_=${timestamp}`;
-            
-            // Remover e recriar o iframe para forçar o recarregamento
-            const newIframe = document.createElement('iframe');
-            newIframe.width = '50%';
-            newIframe.height = '100';
-            newIframe.frameBorder = '-5';
-            newIframe.scrolling = 'no';
-            newIframe.src = widgetUrl;
-            newIframe.onload = () => checkWidget(newIframe, matchId);
-            newIframe.onerror = () => showError(matchId);
-            
-            // Substituir o iframe antigo pelo novo
-            iframe.parentNode.replaceChild(newIframe, iframe);
         } else {
             row.style.display = 'none';
             row.style.opacity = '0';
             row.style.height = '0';
-            
-            // Limpar iframe se não estiver visível
-            const iframe = row.querySelector('.radar-container iframe');
-            if (iframe) {
-                iframe.src = '';
-            }
         }
     });
     
@@ -96,7 +75,7 @@ function mudarPagina(novaPagina) {
 }
 
 function updateMatches() {
-    const matchRows = document.querySelectorAll('.match-row');
+    const matchRows = document.querySelectorAll('#todos-container .match-row');
     
     fetch('/get_matches')
         .then(response => response.json())
@@ -112,60 +91,296 @@ function updateMatches() {
             // Atualizar informações dos jogos
             data.matches.forEach(match => {
                 console.log('Processando jogo:', match);
-                console.log(`Placar recebido da API - Casa: ${match.score.home}, Visitante: ${match.score.away}`);
-                const matchRow = document.querySelector(`[data-event-id="${match.id}"]`);
-                console.log('Match row encontrada:', matchRow);
+                const matchId = match.id;
+                
+                // Verificar se o jogo já existe
+                let matchRow = document.querySelector(`#todos-container [data-event-id="${matchId}"]`);
+                
                 if (matchRow) {
-                    // Atualizar informações do jogo
+                    // Atualizar informações do jogo existente
                     matchRow.querySelector('.team.home img').src = match.homeTeam.logo;
                     matchRow.querySelector('.team.away img').src = match.awayTeam.logo;
                     
-                    // Atualizar o placar usando os valores do score
-                    const placar = `${match.score.home} - ${match.score.away}`;
-                    console.log(`Atualizando placar do jogo ${match.id} para: ${placar} (Time: ${match.time})`);
-                    matchRow.querySelector('.score').textContent = placar;
+                    // Atualizar o placar
+                    const homeScoreEl = matchRow.querySelector('.team-score-container:first-child .score');
+                    const awayScoreEl = matchRow.querySelector('.team-score-container:last-child .score');
+                    
+                    homeScoreEl.textContent = match.homeTeam.score;
+                    awayScoreEl.textContent = match.awayTeam.score;
+                    
                     matchRow.querySelector('.match-time').textContent = match.time;
                     
-                    // Atualizar iframe do radar e link
+                    // Atualizar link sem mexer no iframe
                     const radarContainer = matchRow.querySelector('.radar-container');
-                    const iframe = radarContainer.querySelector('iframe');
                     const link = radarContainer.querySelector('a');
                     
-                    // Só atualiza o radar se o jogo estiver na página atual
-                    const isVisible = matchRow.style.display !== 'none';
-                    if (isVisible) {
-                        const widgetUrl = `https://widgets.sofascore.com/pt-BR/embed/attackMomentum?id=${match.id}&widgetTheme=light`;
-                        console.log('URL do widget:', widgetUrl);
-                        iframe.src = widgetUrl;
-                        // Verificar se o widget carregou após atualizar a URL
-                        checkWidget(iframe, match.id);
-                    }
-                    link.href = `https://www.sofascore.com/pt/match/${match.homeTeam.name.toLowerCase().replace(/\s+/g, '-')}-${match.awayTeam.name.toLowerCase().replace(/\s+/g, '-')}/${match.id}#id:${match.id}`;
+                    link.href = `https://www.sofascore.com/pt/match/${match.homeTeam.name.toLowerCase().replace(/\s+/g, '-')}-${match.awayTeam.name.toLowerCase().replace(/\s+/g, '-')}/${matchId}#id:${matchId}`;
                     link.textContent = `Placar ao vivo ${match.homeTeam.name} - ${match.awayTeam.name}`;
+                    
+                    // Atualizar também no container de favoritos se existir
+                    const favMatchRow = document.querySelector(`#favoritos-container [data-event-id="${matchId}"]`);
+                    if (favMatchRow) {
+                        favMatchRow.querySelector('.team.home img').src = match.homeTeam.logo;
+                        favMatchRow.querySelector('.team.away img').src = match.awayTeam.logo;
+                        
+                        favMatchRow.querySelector('.team-score-container:first-child .score').textContent = match.homeTeam.score;
+                        favMatchRow.querySelector('.team-score-container:last-child .score').textContent = match.awayTeam.score;
+                        
+                        favMatchRow.querySelector('.match-time').textContent = match.time;
+                    }
                 }
             });
             
-            // Reaplicar paginação após atualizar os dados
-            mudarPagina(paginaAtual);
+            // Verificar se algum jogo favorito foi removido da lista de jogos ao vivo
+            if (abaAtual === 'favoritos') {
+                atualizarContainerFavoritos(true);
+            }
         })
         .catch(error => console.error('Erro ao atualizar dados:', error));
 }
 
 // Função para inicializar as atualizações
 function initUpdates() {
+    // Carregar favoritos do localStorage
+    carregarFavoritos();
+    
+    // Configurar eventos das abas
+    configurarAbas();
+    
+    // Configurar eventos dos botões de favorito
+    configurarBotoesFavorito();
+    
     // Aplicar paginação inicial
     mudarPagina(1);
     
     // Primeira atualização após 1 segundo
     setTimeout(updateMatches, 1000);
-    // Atualizar dados a cada 10 segundos para manter o placar mais preciso
-    setInterval(updateMatches, 10000);
+    // Atualizar dados a cada 60 segundos para manter o placar mais preciso
+    // Aumentado o intervalo para evitar atualizações frequentes que podem afetar os widgets
+    setInterval(updateMatches, 60000);
     
     // Log para monitorar as atualizações
-    console.log('Sistema de atualização iniciado - intervalo: 10 segundos');
+    console.log('Sistema de atualização iniciado - intervalo: 60 segundos');
 }
 
-// Inicializar quando o documento estiver pronto
+// Função para carregar favoritos do localStorage
+function carregarFavoritos() {
+    const favoritosStorage = localStorage.getItem('jogos_favoritos');
+    if (favoritosStorage) {
+        favoritos = JSON.parse(favoritosStorage);
+        console.log('Favoritos carregados:', favoritos);
+        
+        // Atualizar contagem de favoritos
+        atualizarContadorFavoritos();
+        
+        // Marcar botões de favoritos como ativos
+        favoritos.forEach(id => {
+            const btn = document.querySelector(`.favorito-btn[data-id="${id}"]`);
+            if (btn) {
+                btn.classList.add('ativo');
+                btn.title = 'Remover dos favoritos';
+            }
+        });
+    }
+}
+
+// Função para salvar favoritos no localStorage
+function salvarFavoritos() {
+    localStorage.setItem('jogos_favoritos', JSON.stringify(favoritos));
+    console.log('Favoritos salvos:', favoritos);
+}
+
+// Função para configurar eventos das abas
+function configurarAbas() {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabId = tab.getAttribute('data-tab');
+            mudarAba(tabId);
+        });
+    });
+}
+
+// Função para mudar de aba
+function mudarAba(novaAba) {
+    if (novaAba === abaAtual) return;
+    
+    // Atualizar aba ativa
+    abaAtual = novaAba;
+    
+    // Atualizar classes das abas
+    document.querySelectorAll('.tab').forEach(tab => {
+        if (tab.getAttribute('data-tab') === abaAtual) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+    
+    // Mostrar/esconder containers
+    if (abaAtual === 'todos') {
+        document.getElementById('todos-container').style.display = 'flex';
+        document.getElementById('favoritos-container').style.display = 'none';
+    } else {
+        document.getElementById('todos-container').style.display = 'none';
+        document.getElementById('favoritos-container').style.display = 'flex';
+        
+        // Atualizar container de favoritos sem recriar os widgets
+        atualizarContainerFavoritos(true);
+    }
+    
+    // Resetar paginação
+    paginaAtual = 1;
+    atualizarPaginacao(abaAtual === 'todos' ? 
+        document.querySelectorAll('#todos-container .match-row').length : 
+        favoritos.length);
+}
+
+// Função para configurar eventos dos botões de favorito
+function configurarBotoesFavorito() {
+    document.querySelectorAll('.favorito-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.getAttribute('data-id');
+            toggleFavorito(id, btn);
+        });
+    });
+}
+
+// Função para alternar favorito
+function toggleFavorito(id, btn) {
+    const index = favoritos.indexOf(id);
+    
+    if (index === -1) {
+        // Adicionar aos favoritos
+        favoritos.push(id);
+        btn.classList.add('ativo');
+        btn.title = 'Remover dos favoritos';
+    } else {
+        // Remover dos favoritos
+        favoritos.splice(index, 1);
+        btn.classList.remove('ativo');
+        btn.title = 'Adicionar aos favoritos';
+        
+        // Se estiver na aba de favoritos, atualizar a visualização
+        if (abaAtual === 'favoritos') {
+            atualizarContainerFavoritos(true);
+        }
+    }
+    
+    // Salvar favoritos no localStorage
+    salvarFavoritos();
+    
+    // Atualizar contagem de favoritos
+    atualizarContadorFavoritos();
+}
+
+// Função para atualizar o contador de favoritos
+function atualizarContadorFavoritos() {
+    const contador = document.querySelector('.favoritos-count');
+    if (contador) {
+        contador.textContent = `(${favoritos.length})`;
+    }
+}
+
+// Função para atualizar o container de favoritos
+function atualizarContainerFavoritos(preservarWidgets = false) {
+    const container = document.getElementById('favoritos-container');
+    const semFavoritos = container.querySelector('.sem-favoritos');
+    
+    // Verificar se há favoritos
+    if (favoritos.length === 0) {
+        // Mostrar mensagem de sem favoritos
+        semFavoritos.style.display = 'block';
+        
+        // Remover jogos existentes
+        container.querySelectorAll('.match-row').forEach(row => {
+            row.remove();
+        });
+        
+        return;
+    }
+    
+    // Esconder mensagem de sem favoritos
+    semFavoritos.style.display = 'none';
+    
+    // Obter jogos existentes no container de favoritos
+    const jogosExistentes = {};
+    container.querySelectorAll('.match-row').forEach(row => {
+        const id = row.getAttribute('data-event-id');
+        if (!favoritos.includes(id)) {
+            // Remover jogos que não estão mais nos favoritos
+            row.remove();
+        } else {
+            // Manter jogos que ainda estão nos favoritos
+            jogosExistentes[id] = row;
+        }
+    });
+    
+    // Adicionar jogos favoritos que ainda não existem no container
+    favoritos.forEach(id => {
+        // Verificar se o jogo já existe no container de favoritos
+        if (!jogosExistentes[id]) {
+            const jogoOriginal = document.querySelector(`#todos-container .match-row[data-event-id="${id}"]`);
+            if (jogoOriginal) {
+                // Clonar o jogo original
+                const jogoClone = jogoOriginal.cloneNode(true);
+                
+                // Atualizar botão de favorito no clone
+                const btnFavorito = jogoClone.querySelector('.favorito-btn');
+                btnFavorito.classList.add('ativo');
+                btnFavorito.title = 'Remover dos favoritos';
+                
+                // Adicionar evento ao botão de favorito no clone
+                btnFavorito.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const id = btnFavorito.getAttribute('data-id');
+                    
+                    // Remover dos favoritos
+                    const index = favoritos.indexOf(id);
+                    if (index !== -1) {
+                        favoritos.splice(index, 1);
+                    }
+                    
+                    // Atualizar botão original
+                    const btnOriginal = document.querySelector(`#todos-container .favorito-btn[data-id="${id}"]`);
+                    if (btnOriginal) {
+                        btnOriginal.classList.remove('ativo');
+                        btnOriginal.title = 'Adicionar aos favoritos';
+                    }
+                    
+                    // Salvar favoritos
+                    salvarFavoritos();
+                    
+                    // Atualizar contagem
+                    atualizarContadorFavoritos();
+                    
+                    // Atualizar container
+                    atualizarContainerFavoritos(true);
+                });
+                
+                // Preservar o iframe original para evitar recarregamento
+                if (preservarWidgets) {
+                    const iframeOriginal = jogoOriginal.querySelector('.radar-container iframe');
+                    const iframeClone = jogoClone.querySelector('.radar-container iframe');
+                    
+                    if (iframeOriginal && iframeOriginal.src && iframeOriginal.src !== 'about:blank') {
+                        iframeClone.src = iframeOriginal.src;
+                    }
+                }
+                
+                // Adicionar ao container de favoritos
+                container.insertBefore(jogoClone, semFavoritos);
+            }
+        }
+    });
+    
+    // Atualizar paginação
+    atualizarPaginacao(favoritos.length);
+}
+
 // Função para verificar se o widget carregou corretamente
 function checkWidget(iframe, matchId) {
     console.log(`Verificando widget para jogo ${matchId}`);

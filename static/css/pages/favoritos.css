@@ -1,0 +1,117 @@
+/* Estilos para a funcionalidade de Favoritos */
+
+/* Abas de navegação */
+.tabs {
+    display: flex;
+    margin-bottom: 1rem;
+    background: var(--card-background);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+    background-color: #2d3470;
+    border-bottom: 3px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.tab:hover:not(.active) {
+    background-color: rgba(45, 52, 112, 0.5);
+}
+
+/* Contador de favoritos */
+.favoritos-count {
+    background-color: #2d3470;
+    color: var(--accent-color);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+/* Botão de favorito */
+.favorito-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    font-size: 1.2rem;
+    z-index: 10;
+    transition: color 0.3s;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.favorito-btn:hover {
+    color: #ffcc00;
+}
+
+.favorito-btn.ativo {
+    color: #ffcc00;
+}
+
+.favorito-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Mensagem quando não há favoritos */
+.sem-favoritos {
+    text-align: center;
+    padding: 2rem;
+    background: var(--card-background);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin: 2rem 0;
+    color: var(--secondary-color);
+}
+
+.sem-favoritos p {
+    margin-bottom: 1rem;
+}
+
+/* Animação para o botão de favorito */
+@keyframes pulsar {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.favorito-btn.ativo svg {
+    animation: pulsar 0.3s ease-in-out;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .tabs {
+        margin-bottom: 0.5rem;
+    }
+    
+    .tab {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .favoritos-count {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+    }
+}

@@ -6,6 +6,7 @@
     <title>Jogos Ao Vivo</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/radar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/favoritos.css') }}">
 </head>
 <body>
     <div class="container">
@@ -22,11 +23,21 @@
             </h1>
         </header>
         
-        <main class="matches-container">
+        <div class="tabs">
+            <div class="tab active" data-tab="todos">Todos os Jogos</div>
+            <div class="tab" data-tab="favoritos">Favoritos <span class="favoritos-count">(0)</span></div>
+        </div>
+        
+        <main class="matches-container" id="todos-container">
             {% for match in matches %}
             <div class="match-row" data-event-id="{{ match.id }}">
                 <div class="match-info">
                     <div class="match-card">
+                        <button class="favorito-btn" data-id="{{ match.id }}" title="Adicionar aos favoritos">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
+                            </svg>
+                        </button>
                         <div class="teams-vertical">
                             <div class="team-score-container">
                                 <div class="team home">
@@ -71,6 +82,14 @@
                 </div>
             </div>
             {% endfor %}
+        </main>
+        
+        <main class="matches-container" id="favoritos-container" style="display: none;">
+            <!-- Container para jogos favoritos, será preenchido via JavaScript -->
+            <div class="sem-favoritos">
+                <p>Você ainda não adicionou nenhum jogo aos favoritos.</p>
+                <p>Clique na estrela ao lado de um jogo para adicioná-lo aos seus favoritos.</p>
+            </div>
         </main>
         
         <div class="pagination">
